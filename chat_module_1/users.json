@@ -1,7 +1,12 @@
 [
     {
         "userlogin": "root",
-        "username": "",
+        "username": "root",
         "userpassword": "root"
+    },
+    {
+        "userlogin": "admin",
+        "username": "admin",
+        "userpassword": "admin"
     }
 ]

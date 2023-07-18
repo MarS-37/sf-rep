@@ -41,6 +41,12 @@ public:
 				else if (command == "/logout") {
 					logout();
 				}
+				else if (command == "/removeaccount") {
+					removeAccount();
+				}
+				else if (command == "/exit") {
+					break;
+				}
 				else {
 					std::cout << "Неизвестная команда. Используйте /help для помощи." << std::endl;
 				}
@@ -120,8 +126,8 @@ private:
 		std::cout << "/signup - регистрация пользователя." << std::endl;
 		std::cout << "/signin - авторизация пользователя. " << std::endl;
 		std::cout << "/logout - выход пользователя." << std::endl;
-		std::cout << " " << std::endl;
-		std::cout << " " << std::endl;
+		std::cout << "/removeaccount - удалить пользователя." << std::endl;
+		std::cout << "/exit - выход из программы." << std::endl;
 	}
 
 	void signUp()
@@ -201,6 +207,7 @@ private:
 			throw std::runtime_error("Неверный пароль");
 		}
 
+		// адрес памяти объекта user
 		loggedInUser = &(*it);
 		std::cout << "Авторизация успешна, здравствуйте " << loggedInUser->getName() 
 			<< "!" << std::endl;
@@ -212,8 +219,29 @@ private:
 			throw std::runtime_error("Вы не вошли в систему");
 		}
 
+		// освобождаем указатель
 		loggedInUser = nullptr;
 		std::cout << "Вы успешно вышли." << std::endl;
+	}
+
+	void removeAccount()
+	{
+		if (!loggedInUser) {
+			throw std::runtime_error("Пользователь неавторизован.");
+		}
+
+		std::string login = loggedInUser->getLogin();
+		users.erase(std::remove_if(users.begin(), users.end(), [&](const user& _user) {
+			return _user.getLogin() == login;
+			}), users.end());
+
+		saveUsers();
+
+		// удаляем файл пользователя
+		std::remove(("server@" + login + ".json").c_str());
+
+		// освобождаем указатель
+		loggedInUser = nullptr;
 	}
 };
 
