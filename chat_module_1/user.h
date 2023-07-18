@@ -4,26 +4,14 @@
 class user
 {
 public:	
-	user(const std::string& login, const std::string& name, const std::string& password)
-		: f_login(login), f_name(name), f_password(password)
-	{
-	}
+
+	// конструктор класса
+	user(const std::string& login, const std::string& name, const std::string& password);
 
 	// геттеры
-	std::string getLogin() const
-	{
-		return f_login;
-	}
-
-	std::string getName() const
-	{
-		return f_name;
-	}
-
-	std::string getPassword() const
-	{
-		return f_password;
-	}
+	std::string getLogin() const;
+	std::string getName() const;
+	std::string getPassword() const;
 
 private:
 	std::string f_login;
