@@ -38,6 +38,9 @@ public:
 				else if (command == "/signin") {
 					signIn();
 				}
+				else if (command == "/logout") {
+					logout();
+				}
 				else {
 					std::cout << "Неизвестная команда. Используйте /help для помощи." << std::endl;
 				}
@@ -95,6 +98,7 @@ private:
 			userData.push_back({
 				{"userlogin", user.getLogin()},
 				{"username", user.getName()},
+				{"userpassword", user.getPassword()}
 				});
 		}
 
@@ -115,7 +119,7 @@ private:
 		std::cout << "/help - список команд." << std::endl;
 		std::cout << "/signup - регистрация пользователя." << std::endl;
 		std::cout << "/signin - авторизация пользователя. " << std::endl;
-		std::cout << " " << std::endl;
+		std::cout << "/logout - выход пользователя." << std::endl;
 		std::cout << " " << std::endl;
 		std::cout << " " << std::endl;
 	}
@@ -123,7 +127,8 @@ private:
 	void signUp()
 	{
 		if (loggedInUser) {
-			throw std::runtime_error("Вы уже вошли в систему. Используйте /logout.");
+			throw std::runtime_error("Авторизован пользователь " + 
+				loggedInUser->getLogin() + ". Используйте команду /logout.");
 		}
 
 		std::string login, name, password;
@@ -174,7 +179,7 @@ private:
 	{
 		if (loggedInUser) {
 			throw std::runtime_error("Залогинен пользователь " +
-				loggedInUser->getLogin() + ". Используйте / logout.");
+				loggedInUser->getLogin() + ". Используйте команду /logout.");
 		}
 
 		std::string login, password;
@@ -186,7 +191,7 @@ private:
 			});
 
 		if (it == users.end()) {
-			throw std::runtime_error("Пользователя с таким логином не существует.");
+			throw std::runtime_error("Пользователя с таким логином не зарегистрирован.");
 		}
 
 		std::cout << "Введите пароль: ";
@@ -199,6 +204,16 @@ private:
 		loggedInUser = &(*it);
 		std::cout << "Авторизация успешна, здравствуйте " << loggedInUser->getName() 
 			<< "!" << std::endl;
+	}
+
+	void logout()
+	{
+		if (!loggedInUser) {
+			throw std::runtime_error("Вы не вошли в систему");
+		}
+
+		loggedInUser = nullptr;
+		std::cout << "Вы успешно вышли." << std::endl;
 	}
 };
 
