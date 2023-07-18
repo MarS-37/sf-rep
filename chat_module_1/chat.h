@@ -31,9 +31,12 @@ public:
 			try {
 				if (command == "/help") {
 					displayHelp();
-				} 
+				}
 				else if (command == "/signup") {
 					signUp();
+				}
+				else if (command == "/signin") {
+					signIn();
 				}
 				else {
 					std::cout << "Неизвестная команда. Используйте /help для помощи." << std::endl;
@@ -81,7 +84,8 @@ private:
 		}
 	}
 
-	void saveUsers() {
+	void saveUsers()
+	{
 
 		// объект JSON
 		json userData;
@@ -105,17 +109,19 @@ private:
 		}
 	}
 
-	void displayHelp() {
+	void displayHelp()
+	{
 		std::cout << "Список команд:" << std::endl;
 		std::cout << "/help - список команд." << std::endl;
 		std::cout << "/signup - регистрация пользователя." << std::endl;
-		std::cout << " " << std::endl;
+		std::cout << "/signin - авторизация пользователя. " << std::endl;
 		std::cout << " " << std::endl;
 		std::cout << " " << std::endl;
 		std::cout << " " << std::endl;
 	}
 
-	void signUp() {
+	void signUp()
+	{
 		if (loggedInUser) {
 			throw std::runtime_error("Вы уже вошли в систему. Используйте /logout.");
 		}
@@ -164,6 +170,35 @@ private:
 		std::cout << "Новая учетная запись создана" << std::endl;
 	}
 
+	void signIn()
+	{
+		if (loggedInUser) {
+			throw std::runtime_error("Залогинен пользователь " +
+				loggedInUser->getLogin() + ". Используйте / logout.");
+		}
 
+		std::string login, password;
+		std::cout << "Enter your login: ";
+		std::cin >> login;
+
+		auto it = std::find_if(users.begin(), users.end(), [&](const user& _user) {
+			return _user.getLogin() == login;
+			});
+
+		if (it == users.end()) {
+			throw std::runtime_error("Пользователя с таким логином не существует.");
+		}
+
+		std::cout << "Введите пароль: ";
+		std::cin >> password;
+
+		if (it->getPassword() != password) {
+			throw std::runtime_error("Неверный пароль");
+		}
+
+		loggedInUser = &(*it);
+		std::cout << "Авторизация успешна, здравствуйте " << loggedInUser->getName() 
+			<< "!" << std::endl;
+	}
 };
 
