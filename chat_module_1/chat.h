@@ -35,7 +35,7 @@ private:
 		// создаем поток файла
 		std::ifstream userFile("users.json");
 		if (userFile) { // файл открыт
-			
+
 			// объект JSON
 			json userData;
 
@@ -48,10 +48,37 @@ private:
 				std::string login = user["userlogin"];
 				std::string name = user["username"];
 				std::string password = user["userpassword"];
+				//добавить цвет пользователя
 
 				// создаем значение JSON и в контейнер
 				users.emplace_back(login, name, password);
 			}
+
+			userFile.close();
+		}
+	}
+
+	void saveUsers() {
+
+		// объект JSON
+		json userData;
+
+		//пока есть данные
+		for (const auto& user : users) {
+			userData.push_back({
+				{"userlogin", user.getLogin()},
+				{"username", user.getName()},
+				});
+		}
+
+		// создаем поток файла
+		std::ofstream userFile("users.json");
+		if (userFile) { // файл открыт
+
+			// записываем JSON строку в файл
+			userFile << userData.dump(4);
+
+			userFile.close();
 		}
 	}
 };
