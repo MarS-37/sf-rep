@@ -1,5 +1,6 @@
 #include "user.h"
 
+// конструктор класса
 user::user(const std::string& login, const std::string& name, const std::string& password)
 	: f_login(login), f_name(name), f_password(password)
 {
