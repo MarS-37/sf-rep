@@ -18,8 +18,31 @@ public:
 		// пользователях чата
 		loadUsers();
 
-		std::cout << "Программа консольный чат модуль 1" << std::endl;
+		std::cout << "Программа консольный чат." << std::endl;
 		std::cout << "Для получения справки введите команду /help" << std::endl;
+
+		while (true) {
+
+			// после авторизации отображаем пользователя
+			std::cout << (loggedInUser ? loggedInUser->getLogin() : "") << "> ";
+			std::string command;
+			std::cin >> command;
+
+			try {
+				if (command == "/help") {
+					displayHelp();
+				} 
+				else if (command == "/signup") {
+					
+				}
+				else {
+					std::cout << "Неизвестная команда. Используйте /help для помощи." << std::endl;
+				}
+			}
+			catch (const std::exception& e) {
+				std::cerr << "Ошибка: " << e.what() << std::endl;
+			}
+		}
 	}
 
 private:
@@ -80,6 +103,16 @@ private:
 
 			userFile.close();
 		}
+	}
+
+	void displayHelp() {
+		std::cout << "Список команд:" << std::endl;
+		std::cout << "/help - список команд." << std::endl;
+		std::cout << " " << std::endl;
+		std::cout << " " << std::endl;
+		std::cout << " " << std::endl;
+		std::cout << " " << std::endl;
+		std::cout << " " << std::endl;
 	}
 };
 
