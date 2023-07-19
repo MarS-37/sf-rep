@@ -4,7 +4,6 @@
 class user
 {
 public:
-
 	// конструктор класса
 	user(const std::string& login, const std::string& name, const std::string& password);
 
@@ -14,6 +13,7 @@ public:
 	std::string getPassword() const;
 
 private:
+	// поля класса
 	std::string f_login;
 	std::string f_name;
 	std::string f_password;
