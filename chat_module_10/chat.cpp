@@ -1,5 +1,5 @@
 #include "chat.h"
-#include <filesystem>
+#include "messages.h"
 
 void chat::displayHelp()
 {
@@ -18,6 +18,9 @@ void chat::start()
 	// загружаем данные о 
 	// пользователях чата
 	loadUsers();
+
+	// создаем объект сообщений
+	Messages<std::string> messages;
 
 	std::cout << "Программа консольный чат." << std::endl;
 	std::cout << "Для получения справки введите команду /help" << std::endl;
@@ -50,7 +53,7 @@ void chat::start()
 			}
 			else {
 
-					// парсер
+				messages.receiveMessage(input_text);// парсер
 					// @username сообщение конкретному пользователю username
 					// все остальное общий чат
 				if (loggedInUser != nullptr)
@@ -132,6 +135,12 @@ void chat::signUp()
 	std::cout << "Придумайте уникальный логин: ";
 	std::cin >> login;
 
+	// приводим строку к lower
+	std::transform(login.begin(), login.end(), login.begin(), tolower);
+
+	if (login == "all") {
+		throw std::runtime_error("Слово \"" + login + "\" зарезервировано. Пожалуйста, введите другой логин.");
+	}
 	// Проверка логина на повтор
 	auto it = std::find_if(users.begin(), users.end(), [&](const user& user) {
 		return user.getLogin() == login;
@@ -183,6 +192,9 @@ void chat::signIn()
 	std::string login, password;
 	std::cout << "Enter your login: ";
 	std::cin  >> login;
+
+	// приводим строку к lower
+	std::transform(login.begin(), login.end(), login.begin(), tolower);
 
 	auto it = std::find_if(users.begin(), users.end(), [&](const user& _user) {
 		return _user.getLogin() == login;
