@@ -1,4 +1,5 @@
 #include "chat.h"
+#include <filesystem>
 
 void chat::displayHelp()
 {
@@ -25,33 +26,38 @@ void chat::start()
 
 		// после авторизации отображаем пользователя
 		std::cout << (loggedInUser ? loggedInUser->getLogin() : "") << "> ";
-		std::string command;
-		std::cin >> command;
+		std::string input_text;
+		std::cin >> input_text;
 
 		try {
-			if (command == "/help") {
+			if (input_text == "/help") {
 				displayHelp();
 			}
-			else if (command == "/signup") {
+			else if (input_text == "/signup") {
 				signUp();
 			}
-			else if (command == "/signin") {
+			else if (input_text == "/signin") {
 				signIn();
 			}
-			else if (command == "/logout") {
+			else if (input_text == "/logout") {
 				logout();
 			}
-			else if (command == "/removeaccount") {
+			else if (input_text == "/removeaccount") {
 				removeAccount();
 			}
-			else if (command == "/exit") {
+			else if (input_text == "/exit") {
 				break;
 			}
 			else {
+
 					// парсер
 					// @username сообщение конкретному пользователю username
 					// все остальное общий чат
+				if (loggedInUser != nullptr)
+					std::cout << "Авторизован пользователь " + input_text << std::endl;
+				else
 					std::cout << "Неизвестная команда. Используйте /help для помощи." << std::endl;
+
 			}
 		}
 		catch (const std::exception& e) {
@@ -154,7 +160,7 @@ void chat::signUp()
 	saveUsers();
 
 	// создаем файл server@username.json
-	std::ofstream userFile("servers/server@" + login + ".json");
+	std::ofstream userFile("server@" + login + ".json");
 	if (userFile) { // файл создан
 
 		// Инициализация пустого 
@@ -207,8 +213,9 @@ void chat::logout()
 	}
 
 	// освобождаем указатель
-	std::cout << loggedInUser->getLogin() + " вышел из чата.";
+	std::cout << "Пользователь " + loggedInUser->getLogin() + " вышел из чата\n";
 	loggedInUser = nullptr;
+	
 }
 
 
@@ -226,7 +233,7 @@ void chat::removeAccount()
 	saveUsers();
 
 	// удаляем файл пользователя
-	std::remove(("servers/server@" + login + ".json").c_str());
+	std::remove(("server@" + login + ".json").c_str());
 
 	// освобождаем указатель
 	loggedInUser = nullptr;

@@ -1,42 +1,12 @@
 [
     {
-        "userlogin": "root",
-        "username": "root",
-        "userpassword": "root"
-    },
-    {
         "userlogin": "admin",
         "username": "admin",
         "userpassword": "admin"
     },
     {
-        "userlogin": "user",
-        "username": "user",
-        "userpassword": "user"
-    },
-    {
-        "userlogin": "kot",
-        "username": "kot",
-        "userpassword": "kot"
-    },
-    {
-        "userlogin": "poc",
-        "username": "poc",
-        "userpassword": "poc"
-    },
-    {
-        "userlogin": "forez",
-        "username": "forez",
-        "userpassword": "forez"
-    },
-    {
-        "userlogin": "troxa",
-        "username": "troxa",
-        "userpassword": "troxa"
-    },
-    {
-        "userlogin": "perevozov",
-        "username": "perevozov",
-        "userpassword": "perevozov"
+        "userlogin": "root",
+        "username": "root",
+        "userpassword": "root"
     }
 ]
